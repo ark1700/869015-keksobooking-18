@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Денис Савченко](https://up.htmlacademy.ru/javascript/18/user/869015).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Трасковский](https://htmlacademy.ru/profile/id454037).
 
 ---
 
