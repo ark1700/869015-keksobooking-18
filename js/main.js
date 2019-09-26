@@ -8,6 +8,7 @@ var pinTemplate = document.querySelector('#pin')
     .querySelector('.map__pin');
 
 var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
 
 var getRandomFromArr = function (arr, count) {
   if (count === -1) {
@@ -29,8 +30,19 @@ var generateAd = function () {
   var ADS_NUMBER = 8;
   var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
   var CHECK_TIMES = ['12:00', '13:00', '14:00'];
-  var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var OFFER_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  var OFFER_FEATURES = [
+    'wifi',
+    'dishwasher',
+    'parking',
+    'washer',
+    'elevator',
+    'conditioner'
+  ];
+  var OFFER_PHOTOS = [
+    'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+    'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+    'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
+  ];
   for (var i = 0; i < ADS_NUMBER; i++) {
     var locationX = Math.floor(Math.random() * (mapWidth - PIN_WIDTH));
     var locationY = 130 + Math.floor(Math.random() * 500);
@@ -71,8 +83,8 @@ document.querySelector('.map').classList.remove('map--faded');
 
 var renderPin = function (ad) {
   var pinElement = pinTemplate.cloneNode(true);
-  pinElement.style.left = ad.location.x + 'px';
-  pinElement.style.top = ad.location.y + 'px';
+  pinElement.style.left = ad.location.x - PIN_WIDTH / 2 + 'px';
+  pinElement.style.top = ad.location.y - PIN_HEIGHT + 'px';
   pinElement.querySelector('img').src = ad.author.avatar;
   pinElement.querySelector('img').alt = ad.offer.title;
   return pinElement;
