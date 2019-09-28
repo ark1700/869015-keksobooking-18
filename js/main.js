@@ -48,7 +48,6 @@ var generateAd = function () {
     var locationY = 130 + Math.floor(Math.random() * 500);
     var featuresNumber = 1 + Math.floor(Math.random() * (OFFER_FEATURES.length - 1));
     // var photosNumber = 1 + Math.floor(Math.random() * (OFFER_PHOTOS.length - 1));
-    var photosNumber = 2;
     var ad = {
       'author': {
         'avatar': 'img/avatars/user0' + (i + 1) + '.png'
@@ -125,7 +124,7 @@ var renderCardPhoto = function (cardElement, ad) {
     photo.src = ad.offer.photos[i];
     photoBlock.appendChild(photo);
   }
-}
+};
 
 var renderCard = function (ad) {
   var cardElement = cardTemplate.cloneNode(true);
