@@ -55,31 +55,30 @@ var generateAd = function () {
     var price1 = (1 + Math.floor(Math.random() * (PRICE_MAX / PRICE_MULTIPLIER - 1))) * PRICE_MULTIPLIER;
     var price2 = (1 + Math.floor(Math.random() * (PRICE_MAX / PRICE_MULTIPLIER - 1))) * PRICE_MULTIPLIER;
     var priceArr = [price1, price2];
-    var ad = {
-      'author': {
-        'avatar': 'img/avatars/user0' + (i + 1) + '.png'
+    var photoNumber = i < 10 ? '0' + (i + 1) : (i + 1);
+    var photoLink = 'img/avatars/user' + photoNumber + '.png';
+    ads.push({
+      author: {
+        avatar: photoLink
       },
-
-      'offer': {
-        'title': 'title-' + i,
-        'address': '(' + locationX + ', ' + locationY + ')',
-        'price': priceArr,
-        'type': getRandomFromArr(OFFER_TYPES, -1),
-        'rooms': roomNumber,
-        'guests': guestNumber,
-        'checkin': getRandomFromArr(CHECK_TIMES, -1),
-        'checkout': getRandomFromArr(CHECK_TIMES, -1),
-        'features': getRandomFromArr(OFFER_FEATURES, featuresNumber),
-        'description': '{{descr-' + i + '}}',
-        'photos': OFFER_PHOTOS
+      offer: {
+        title: 'title-' + i,
+        address: '(' + locationX + ', ' + locationY + ')',
+        price: priceArr,
+        type: getRandomFromArr(OFFER_TYPES, -1),
+        rooms: roomNumber,
+        guests: guestNumber,
+        checkin: getRandomFromArr(CHECK_TIMES, -1),
+        checkout: getRandomFromArr(CHECK_TIMES, -1),
+        features: getRandomFromArr(OFFER_FEATURES, featuresNumber),
+        description: '{{descr-' + i + '}}',
+        photos: OFFER_PHOTOS
       },
-
-      'location': {
+      location: {
         'x': locationX,
         'y': locationY
       }
-    };
-    ads.push(ad);
+    });
   }
   return ads;
 };
