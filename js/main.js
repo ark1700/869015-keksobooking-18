@@ -47,32 +47,38 @@ var generateAd = function () {
     var locationX = Math.floor(Math.random() * (mapWidth - PIN_WIDTH));
     var locationY = 130 + Math.floor(Math.random() * 500);
     var featuresNumber = 1 + Math.floor(Math.random() * (OFFER_FEATURES.length - 1));
-    var photosNumber = 1 + Math.floor(Math.random() * (OFFER_PHOTOS.length - 1));
-    var ad = {
-      'author': {
-        'avatar': 'img/avatars/user0' + (i + 1) + '.png'
+    var ROOMS_MAX = 5;
+    var roomNumber = 1 + Math.floor(Math.random() * (ROOMS_MAX - 1));
+    var guestNumber = 1 + Math.floor(Math.random() * (roomNumber - 1));
+    var PRICE_MAX = 5000;
+    var PRICE_MULTIPLIER = 100;
+    var price1 = (1 + Math.floor(Math.random() * (PRICE_MAX / PRICE_MULTIPLIER - 1))) * PRICE_MULTIPLIER;
+    var price2 = (1 + Math.floor(Math.random() * (PRICE_MAX / PRICE_MULTIPLIER - 1))) * PRICE_MULTIPLIER;
+    var priceArr = [price1, price2];
+    var photoNumber = i < 10 ? '0' + (i + 1) : (i + 1);
+    var photoLink = 'img/avatars/user' + photoNumber + '.png';
+    ads.push({
+      author: {
+        avatar: photoLink
       },
-
-      'offer': {
-        'title': 'title-' + i,
-        'address': '{{location.x-' + i + '}}, {{location.y-' + i + '}}',
-        'price': '{{price1-' + i + '}}, {{price2-' + i + '}}',
-        'type': getRandomFromArr(OFFER_TYPES, -1),
-        'rooms': '{{rooms-' + i + '}}',
-        'guests': '{{guests-' + i + '}}',
-        'checkin': getRandomFromArr(CHECK_TIMES, -1),
-        'checkout': getRandomFromArr(CHECK_TIMES, -1),
-        'features': getRandomFromArr(OFFER_FEATURES, featuresNumber),
-        'description': '{{descr-' + i + '}}',
-        'photos': getRandomFromArr(OFFER_PHOTOS, photosNumber)
+      offer: {
+        title: 'title-' + i,
+        address: '(' + locationX + ', ' + locationY + ')',
+        price: priceArr,
+        type: getRandomFromArr(OFFER_TYPES, -1),
+        rooms: roomNumber,
+        guests: guestNumber,
+        checkin: getRandomFromArr(CHECK_TIMES, -1),
+        checkout: getRandomFromArr(CHECK_TIMES, -1),
+        features: getRandomFromArr(OFFER_FEATURES, featuresNumber),
+        description: '{{descr-' + i + '}}',
+        photos: OFFER_PHOTOS
       },
-
-      'location': {
+      location: {
         'x': locationX,
         'y': locationY
       }
-    };
-    ads.push(ad);
+    });
   }
   return ads;
 };
@@ -97,4 +103,51 @@ var renderMap = function (pin, mapWindow) {
   mapWindow.appendChild(fragment);
 };
 
+var cardTemplate = document.querySelector('#card')
+    .content
+    .querySelector('.popup');
+
+var offerType = function (type) {
+  switch (type) {
+    case 'flat':
+      return 'Квартира';
+    case 'bungalo':
+      return 'Бунгало';
+    case 'palace':
+      return 'Дворец';
+    default:
+      return 'Дом';
+  }
+};
+
+var renderCardPhoto = function (cardElement, ad) {
+  var photoBlock = cardElement.querySelector('.popup__photos');
+  var photoImg = photoBlock.querySelector('.popup__photo').cloneNode(true);
+  photoBlock.innerHTML = '';
+  for (var i = 0; i < ad.offer.photos.length; i++) {
+    var photo = photoImg.cloneNode(true);
+    photo.src = ad.offer.photos[i];
+    photoBlock.appendChild(photo);
+  }
+};
+
+var renderCard = function (ad) {
+  var cardElement = cardTemplate.cloneNode(true);
+  cardElement.querySelector('.popup__title').textContent = ad.offer.title;
+  cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
+  cardElement.querySelector('.popup__text--price').textContent = Math.min.apply(null, ad.offer.price) + '₽/ночь';
+  cardElement.querySelector('.popup__type').alt = offerType(ad.offer.type);
+  cardElement.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
+  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+  cardElement.querySelector('.popup__features').textContent = ad.offer.features.join(', ');
+  cardElement.querySelector('.popup__description').textContent = ad.offer.description;
+  renderCardPhoto(cardElement, ad);
+  cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
+
+  var fragment = document.createDocumentFragment();
+  fragment.appendChild(cardElement);
+  map.appendChild(fragment);
+};
+
 renderMap(ads, map);
+renderCard(ads[0]);
