@@ -85,8 +85,6 @@ var generateAd = function () {
 
 var ads = generateAd();
 
-document.querySelector('.map').classList.remove('map--faded');
-
 var renderPin = function (ad) {
   var pinElement = pinTemplate.cloneNode(true);
   pinElement.style.left = ad.location.x - PIN_WIDTH / 2 + 'px';
@@ -149,5 +147,60 @@ var renderCard = function (ad) {
   map.appendChild(fragment);
 };
 
-renderMap(ads, map);
-renderCard(ads[0]);
+var disableAllInputs = function () {
+  var adFieldsets = document.querySelectorAll('fieldset, select');
+  adFieldsets.forEach(function (elem) {
+    elem.disabled = true;
+  });
+};
+
+var anableAllInputs = function () {
+  var adFieldsets = document.querySelectorAll('fieldset, select');
+  adFieldsets.forEach(function (elem) {
+    elem.disabled = false;
+  });
+};
+
+var locationInput = document.querySelector('#address');
+var mainPin = document.querySelector('.map__pin--main');
+var MAIN_PIN_WIDTH = 65;
+var MAIN_PIN_HEIGHT = 87;
+var ENTER_KEYCODE = 13;
+
+var setInputLocation = function () {
+  var coordinateX = Math.round(+mainPin.style.left.slice(0, -2) + MAIN_PIN_WIDTH / 2);
+  var coordinateY = Math.round(+mainPin.style.top.slice(0, -2) + MAIN_PIN_HEIGHT);
+  locationInput.value = coordinateX + ', ' + coordinateY;
+};
+
+var activeState = function () {
+  document.querySelector('.map').classList.remove('map--faded');
+  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+  anableAllInputs();
+  renderMap(ads, map);
+  renderCard(ads[0]);
+  setInputLocation();
+};
+
+disableAllInputs();
+
+mainPin.addEventListener('mousedown', activeState);
+
+mainPin.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    activeState();
+  }
+});
+
+var adForm = document.querySelector('.ad-form');
+var guestsNumberInput = adForm.querySelector('#capacity');
+var roomsNumberInput = adForm.querySelector('#room_number');
+
+adForm.addEventListener('input', function () {
+  if (guestsNumberInput.value > roomsNumberInput.value) {
+    guestsNumberInput.setCustomValidity('Кол-во гостей не должно превышать кол-ва комнат');
+  } else {
+    guestsNumberInput.setCustomValidity('');
+  }
+});
+
