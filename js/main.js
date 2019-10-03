@@ -147,17 +147,14 @@ var renderCard = function (ad) {
   map.appendChild(fragment);
 };
 
-var disableAllInputs = function () {
-  var adFieldsets = document.querySelectorAll('fieldset, select');
-  adFieldsets.forEach(function (elem) {
-    elem.disabled = true;
-  });
-};
+var adFieldsets = document.querySelectorAll('fieldset, select');
 
-var anableAllInputs = function () {
-  var adFieldsets = document.querySelectorAll('fieldset, select');
+var disableAllInputs = function (disabled) {
+  if (disabled === undefined) {
+    var disabled = true;
+  }
   adFieldsets.forEach(function (elem) {
-    elem.disabled = false;
+    elem.disabled = disabled;
   });
 };
 
@@ -168,15 +165,16 @@ var MAIN_PIN_HEIGHT = 87;
 var ENTER_KEYCODE = 13;
 
 var setInputLocation = function () {
-  var coordinateX = Math.round(+mainPin.style.left.slice(0, -2) + MAIN_PIN_WIDTH / 2);
-  var coordinateY = Math.round(+mainPin.style.top.slice(0, -2) + MAIN_PIN_HEIGHT);
+  var mainPinStyle =  getComputedStyle(mainPin);
+  var coordinateX = Math.round(+mainPinStyle.left.slice(0, -2) + MAIN_PIN_WIDTH / 2);
+  var coordinateY = Math.round(+mainPinStyle.top.slice(0, -2) + MAIN_PIN_HEIGHT);
   locationInput.value = coordinateX + ', ' + coordinateY;
 };
 
-var activeState = function () {
+var activeMap = function () {
   document.querySelector('.map').classList.remove('map--faded');
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
-  anableAllInputs();
+  disableAllInputs(false);
   renderMap(ads, map);
   renderCard(ads[0]);
   setInputLocation();
@@ -184,11 +182,11 @@ var activeState = function () {
 
 disableAllInputs();
 
-mainPin.addEventListener('mousedown', activeState);
+mainPin.addEventListener('mousedown', activeMap);
 
 mainPin.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    activeState();
+  if (evt.code === 'Enter') {
+    activeMap();
   }
 });
 
