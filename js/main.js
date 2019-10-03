@@ -151,7 +151,7 @@ var adFieldsets = document.querySelectorAll('fieldset, select');
 
 var disableAllInputs = function (disabled) {
   if (disabled === undefined) {
-    var disabled = true;
+    disabled = true;
   }
   adFieldsets.forEach(function (elem) {
     elem.disabled = disabled;
@@ -162,10 +162,9 @@ var locationInput = document.querySelector('#address');
 var mainPin = document.querySelector('.map__pin--main');
 var MAIN_PIN_WIDTH = 65;
 var MAIN_PIN_HEIGHT = 87;
-var ENTER_KEYCODE = 13;
 
 var setInputLocation = function () {
-  var mainPinStyle =  getComputedStyle(mainPin);
+  var mainPinStyle = getComputedStyle(mainPin);
   var coordinateX = Math.round(+mainPinStyle.left.slice(0, -2) + MAIN_PIN_WIDTH / 2);
   var coordinateY = Math.round(+mainPinStyle.top.slice(0, -2) + MAIN_PIN_HEIGHT);
   locationInput.value = coordinateX + ', ' + coordinateY;
