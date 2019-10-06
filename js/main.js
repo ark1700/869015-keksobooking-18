@@ -165,29 +165,29 @@ var MAIN_PIN_HEIGHT = 87;
 
 var setInputLocation = function () {
   var mainPinStyle = getComputedStyle(mainPin);
-  var coordinateX = Math.round(+mainPinStyle.left.slice(0, -2) + MAIN_PIN_WIDTH / 2);
-  var coordinateY = Math.round(+mainPinStyle.top.slice(0, -2) + MAIN_PIN_HEIGHT);
+  var coordinateX = Math.round(Number(mainPinStyle.left.slice(0, -2), 10) + MAIN_PIN_WIDTH / 2);
+  var coordinateY = Math.round(Number(mainPinStyle.top.slice(0, -2), 10) + MAIN_PIN_HEIGHT);
   locationInput.value = coordinateX + ', ' + coordinateY;
 };
 
-var activeMap = function () {
-  document.querySelector('.map').classList.remove('map--faded');
-  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
-  disableAllInputs(false);
-  renderMap(ads, map);
-  renderCard(ads[0]);
-  setInputLocation();
+var activateMap = function (evt) {
+  if (evt.type === 'mousedown' || evt.code === 'Enter') {
+    mainPin.removeEventListener('mousedown', activateMap);
+    mainPin.removeEventListener('keydown', activateMap);
+    document.querySelector('.map').classList.remove('map--faded');
+    document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+    disableAllInputs(false);
+    renderMap(ads, map);
+    renderCard(ads[0]);
+    setInputLocation();
+  }
 };
 
 disableAllInputs();
 
-mainPin.addEventListener('mousedown', activeMap);
+mainPin.addEventListener('mousedown', activateMap);
 
-mainPin.addEventListener('keydown', function (evt) {
-  if (evt.code === 'Enter') {
-    activeMap();
-  }
-});
+mainPin.addEventListener('keydown', activateMap);
 
 var adForm = document.querySelector('.ad-form');
 var guestsNumberInput = adForm.querySelector('#capacity');
