@@ -129,8 +129,7 @@ var renderCardPhoto = function (cardElement, ad) {
   }
 };
 
-var renderCard = function (ad) {
-  var cardElement = cardTemplate.cloneNode(true);
+var setCard = function (cardElement, ad) {
   cardElement.querySelector('.popup__title').textContent = ad.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
   cardElement.querySelector('.popup__text--price').textContent = Math.min.apply(null, ad.offer.price) + '₽/ночь';
@@ -141,6 +140,11 @@ var renderCard = function (ad) {
   cardElement.querySelector('.popup__description').textContent = ad.offer.description;
   renderCardPhoto(cardElement, ad);
   cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
+};
+
+var renderCard = function (ad) {
+  var cardElement = cardTemplate.cloneNode(true);
+  setCard(cardElement, ad);
 
   var fragment = document.createDocumentFragment();
   fragment.appendChild(cardElement);
@@ -170,6 +174,34 @@ var setInputLocation = function () {
   locationInput.value = coordinateX + ', ' + coordinateY;
 };
 
+var hideCard = function (evt) {
+  if (evt.type === 'mousedown' || evt.code === 'Enter') {
+    map.querySelector('.popup').style.display = 'none';
+    map.querySelector('.popup__close').removeEventListener('mousedown', hideCard);
+  }
+};
+
+var addingPinHandler = function (mapPins, index) {
+  var pinHandler = function (evt) {
+    if (evt.type === 'mousedown' || evt.code === 'Enter') {
+      var popup = map.querySelector('.popup');
+      if (!popup) {
+        renderCard(ads[index]);
+      } else {
+        if (getComputedStyle(popup).display === 'none') {
+          popup.style.display = 'block';
+        }
+        setCard(popup, ads[index]);
+      }
+
+      map.querySelector('.popup__close').addEventListener('mousedown', hideCard);
+      map.querySelector('.popup__close').addEventListener('keydown', hideCard);
+    }
+  };
+  mapPins[index].addEventListener('mousedown', pinHandler);
+  mapPins[index].addEventListener('keydown', pinHandler);
+};
+
 var activateMap = function (evt) {
   if (evt.type === 'mousedown' || evt.code === 'Enter') {
     mainPin.removeEventListener('mousedown', activateMap);
@@ -178,8 +210,12 @@ var activateMap = function (evt) {
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
     disableAllInputs(false);
     renderMap(ads, map);
-    renderCard(ads[0]);
     setInputLocation();
+
+    var mapPins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < mapPins.length; i++) {
+      addingPinHandler(mapPins, i);
+    }
   }
 };
 
@@ -201,3 +237,68 @@ adForm.addEventListener('input', function () {
   }
 });
 
+// validation
+var adTitle = adForm.querySelector('input[name="title"]');
+var adPrice = adForm.querySelector('input[name="price"]');
+var adType = adForm.querySelector('select[name="type"]');
+var adTimeIn = adForm.querySelector('select[name="timein"]');
+var adTimeOut = adForm.querySelector('select[name="timeout"]');
+var minTypePrice = [
+  ['bungalo', 'flat', 'house', 'palace'],
+  [0, 1000, 5000, 10000]
+];
+
+var getMinTypePrice = function (type) {
+  var result;
+  for (var i = 0; i < minTypePrice[0].length; i++) {
+    if (type === minTypePrice[0][i]) {
+      result = minTypePrice[1][i];
+    }
+  }
+  return result;
+};
+
+adTitle.addEventListener('invalid', function () {
+  if (adTitle.validity.tooShort) {
+    adTitle.setCustomValidity('Заголовок объявления должeн состоять минимум из 30 символов');
+  } else if (adTitle.validity.tooLong) {
+    adTitle.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
+  } else if (adTitle.validity.valueMissing) {
+    adTitle.setCustomValidity('Обязательное поле');
+  } else {
+    adTitle.setCustomValidity('');
+  }
+});
+
+adPrice.addEventListener('invalid', function () {
+  if (adTitle.validity.tooLong) {
+    adTitle.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
+  } else if (adTitle.validity.valueMissing) {
+    adTitle.setCustomValidity('Обязательное поле');
+  } else {
+    adTitle.setCustomValidity('');
+  }
+});
+
+adPrice.addEventListener('input', function (evt) {
+  var target = evt.target;
+  adType = adForm.querySelector('select[name="type"]');
+  if (target.value < getMinTypePrice(adType.value)) {
+    target.setCustomValidity('Минимальная "Цена за ночь" для ' + adType.options[adType.selectedIndex].innerHTML + ' - ' + getMinTypePrice(adType.value) + ' руб.');
+  } else {
+    target.setCustomValidity('');
+  }
+});
+
+adType.addEventListener('input', function () {
+  adPrice.min = getMinTypePrice(adType.value);
+  adPrice.placeholder = getMinTypePrice(adType.value);
+});
+
+adTimeIn.addEventListener('input', function () {
+  adTimeOut.value = adTimeIn.value;
+});
+
+adTimeOut.addEventListener('input', function () {
+  adTimeIn.value = adTimeOut.value;
+});
