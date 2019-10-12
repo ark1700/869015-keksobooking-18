@@ -32,7 +32,7 @@
   var setCard = function (cardElement, ad) {
     cardElement.querySelector('.popup__title').textContent = ad.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
-    cardElement.querySelector('.popup__text--price').textContent = Math.min.apply(null, ad.offer.price) + '₽/ночь';
+    cardElement.querySelector('.popup__text--price').textContent = ad.offer.price + '₽/ночь';
     cardElement.querySelector('.popup__type').alt = offerType(ad.offer.type);
     cardElement.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;

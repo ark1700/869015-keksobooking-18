@@ -22,7 +22,7 @@
   };
 
   var activateMap = function (evt) {
-    if (evt.type === 'mousedown' || evt.code === 'Enter') {
+    if ((evt.type === 'mousedown' || evt.code === 'Enter') && window.ads) {
       mainPin.removeEventListener('mousedown', activateMap);
       mainPin.removeEventListener('keydown', activateMap);
       document.querySelector('.map').classList.remove('map--faded');
