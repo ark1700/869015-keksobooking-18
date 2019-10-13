@@ -11,16 +11,16 @@
     var error = errorTemplate.cloneNode(true);
     error.querySelector('.error__message').textContent = errorMessage;
     var errorBtn = error.querySelector('.error__button');
-    errorBtn.addEventListener('mousedown', function (evt) {
+
+    var errorBtnHandler = function (evt) {
       evt.preventDefault();
-      window.location.reload();
-    });
-    errorBtn.addEventListener('keydown', function (evt) {
-      evt.preventDefault();
-      if (evt.code === 'Enter') {
+      if (evt.type === 'keydown' && evt.code === 'Enter' || evt.type === 'mousedown') {
         window.location.reload();
       }
-    });
+    };
+
+    errorBtn.addEventListener('mousedown', errorBtnHandler);
+    errorBtn.addEventListener('keydown', errorBtnHandler);
     document.body.insertAdjacentElement('afterbegin', error);
   };
 
