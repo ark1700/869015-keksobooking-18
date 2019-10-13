@@ -14,7 +14,7 @@
 
     var errorBtnHandler = function (evt) {
       evt.preventDefault();
-      if (evt.type === 'keydown' && evt.code === 'Enter' || evt.type === 'mousedown') {
+      if ((evt.type === 'keydown' && evt.code === 'Enter') || evt.type === 'mousedown') {
         window.location.reload();
       }
     };
