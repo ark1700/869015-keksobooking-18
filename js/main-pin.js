@@ -8,8 +8,8 @@
 
   var setInputLocation = function () {
     var mainPinStyle = getComputedStyle(mainPin);
-    var coordinateX = Math.round(Number(mainPinStyle.left.slice(0, -2), 10) + MAIN_PIN_WIDTH / 2);
-    var coordinateY = Math.round(Number(mainPinStyle.top.slice(0, -2), 10) + MAIN_PIN_HEIGHT);
+    var coordinateX = Math.round(Number(mainPinStyle.left.slice(0, -2)) + MAIN_PIN_WIDTH / 2);
+    var coordinateY = Math.round(Number(mainPinStyle.top.slice(0, -2)) + MAIN_PIN_HEIGHT);
     locationInput.value = coordinateX + ', ' + coordinateY;
   };
 
@@ -30,7 +30,7 @@
       dragged = true;
 
       var Y_MIN = 129;
-      var Y_MAX = 601;
+      var Y_MAX = 631;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
