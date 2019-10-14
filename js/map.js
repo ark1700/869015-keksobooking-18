@@ -56,8 +56,8 @@
     mainPin.style.left = '570px';
 
     if (window.form.successFormMessage) {
-      window.removeEventListener('mousedown', window.form.successFormMessageHandler);
-      window.removeEventListener('keydown', window.form.successFormMessageHandler);
+      document.removeEventListener('mousedown', window.form.successFormMessageHandler);
+      document.removeEventListener('keydown', window.form.successFormMessageHandler);
     }
   };
 

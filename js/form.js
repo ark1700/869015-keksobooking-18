@@ -113,8 +113,8 @@
         successFormMessage.remove();
       }
     };
-    window.addEventListener('mousedown', successFormMessageHandler);
-    window.addEventListener('keydown', successFormMessageHandler);
+    document.addEventListener('mousedown', successFormMessageHandler);
+    document.addEventListener('keydown', successFormMessageHandler);
 
     window.form.successFormMessage = successFormMessage;
     window.form.successFormMessageHandler = successFormMessageHandler;
@@ -137,14 +137,14 @@
       ) {
         errorFormMessage.remove();
 
-        window.removeEventListener('mousedown', errorHandler);
-        window.removeEventListener('keydown', errorHandler);
+        document.removeEventListener('mousedown', errorHandler);
+        document.removeEventListener('keydown', errorHandler);
         errorBtn.addEventListener('keydown', errorHandler);
       }
     };
 
-    window.addEventListener('mousedown', errorHandler);
-    window.addEventListener('keydown', errorHandler);
+    document.addEventListener('mousedown', errorHandler);
+    document.addEventListener('keydown', errorHandler);
     errorBtn.addEventListener('keydown', errorHandler);
   };
 
