@@ -1,8 +1,9 @@
 'use strict';
 
 (function () {
+  var adForm = document.querySelector('.ad-form');
+
   var validtionForm = function () {
-    var adForm = document.querySelector('.ad-form');
     var guestsNumberInput = adForm.querySelector('#capacity');
     var roomsNumberInput = adForm.querySelector('#room_number');
 
@@ -97,6 +98,61 @@
       elem.disabled = disabled;
     });
   };
+
+  var onSuccessForm = function () {
+    window.map.deactivateMap();
+
+    var successFormTemplate = document.querySelector('#success')
+      .content
+      .querySelector('.success');
+    var successFormMessage = successFormTemplate.cloneNode(true);
+    document.body.insertAdjacentElement('afterbegin', successFormMessage);
+
+    var successFormMessageHandler = function (evt) {
+      if (evt.type === 'mousedown' || evt.code === 'Escape') {
+        successFormMessage.remove();
+      }
+    };
+    document.addEventListener('mousedown', successFormMessageHandler);
+    document.addEventListener('keydown', successFormMessageHandler);
+
+    window.form.successFormMessage = successFormMessage;
+    window.form.successFormMessageHandler = successFormMessageHandler;
+  };
+
+  var onErrorForm = function (msg) {
+    var errorFormTemplate = document.querySelector('#error')
+      .content
+      .querySelector('.error');
+
+    var errorFormMessage = errorFormTemplate.cloneNode(true);
+    errorFormMessage.querySelector('.error__message').textContent = msg;
+    document.body.insertAdjacentElement('afterbegin', errorFormMessage);
+
+    var errorBtn = document.querySelector('.error__button');
+
+    var errorHandler = function (evt) {
+      if (evt.type === 'mousedown' || evt.code === 'Escape' ||
+        evt.target === errorBtn && (evt.code === 'Enter' || evt.code === 'NumpadEnter')
+      ) {
+        errorFormMessage.remove();
+
+        document.removeEventListener('mousedown', errorHandler);
+        document.removeEventListener('keydown', errorHandler);
+        errorBtn.addEventListener('keydown', errorHandler);
+      }
+    };
+
+    document.addEventListener('mousedown', errorHandler);
+    document.addEventListener('keydown', errorHandler);
+    errorBtn.addEventListener('keydown', errorHandler);
+  };
+
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.upload(new FormData(adForm), onSuccessForm, onErrorForm);
+  });
 
   window.form = {
     validtionForm: validtionForm,

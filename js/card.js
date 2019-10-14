@@ -20,8 +20,8 @@
 
   var renderCardPhoto = function (cardElement, ad) {
     var photoBlock = cardElement.querySelector('.popup__photos');
-    var photoImg = photoBlock.querySelector('.popup__photo').cloneNode(true);
     photoBlock.innerHTML = '';
+    var photoImg = cardTemplate.querySelector('.popup__photo').cloneNode(true);
     for (var i = 0; i < ad.offer.photos.length; i++) {
       var photo = photoImg.cloneNode(true);
       photo.src = ad.offer.photos[i];
@@ -48,13 +48,13 @@
 
     var fragment = document.createDocumentFragment();
     fragment.appendChild(cardElement);
-    window.map.appendChild(fragment);
+    window.map.map.appendChild(fragment);
   };
 
   var hideCard = function (evt) {
-    if (evt.type === 'mousedown' || evt.code === 'Enter') {
-      window.map.querySelector('.popup').style.display = 'none';
-      window.map.querySelector('.popup__close').removeEventListener('mousedown', hideCard);
+    if (evt.type === 'mousedown' || evt.code === 'Enter' || evt.code === 'NumpadEnter') {
+      window.map.map.querySelector('.popup').style.display = 'none';
+      window.map.map.querySelector('.popup__close').removeEventListener('mousedown', hideCard);
     }
   };
 
