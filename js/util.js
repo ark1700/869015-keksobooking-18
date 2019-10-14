@@ -18,8 +18,6 @@
   window.PIN_WIDTH = 50;
   window.PIN_HEIGHT = 70;
 
-  window.map = document.querySelector('.map__pins');
-
   window.util = {
     getRandomFromArr: getRandomFromArr,
   };

@@ -44,7 +44,7 @@
 
       if (
         mainPin.offsetLeft - shift.x > -MAIN_PIN_WIDTH / 2 && // x min
-        mainPin.offsetLeft - shift.x < window.map.clientWidth - MAIN_PIN_WIDTH / 2 && // x max
+        mainPin.offsetLeft - shift.x < window.map.map.clientWidth - MAIN_PIN_WIDTH / 2 && // x max
         mainPin.offsetTop - shift.y > Y_MIN - MAIN_PIN_HEIGHT && // y min
         mainPin.offsetTop - shift.y < Y_MAX - MAIN_PIN_HEIGHT // y max
       ) {

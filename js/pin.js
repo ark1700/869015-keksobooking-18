@@ -16,8 +16,8 @@
 
   var addingPinHandler = function (mapPins, index) {
     var pinHandler = function (evt) {
-      if (evt.type === 'mousedown' || evt.code === 'Enter') {
-        var popup = window.map.querySelector('.popup');
+      if (evt.type === 'mousedown' || evt.code === 'Enter' || evt.code === 'NumpadEnter') {
+        var popup = window.map.map.querySelector('.popup');
         if (!popup) {
           window.card.renderCard(window.ads[index]);
         } else {
@@ -27,8 +27,8 @@
           window.card.setCard(popup, window.ads[index]);
         }
 
-        window.map.querySelector('.popup__close').addEventListener('mousedown', window.card.hideCard);
-        window.map.querySelector('.popup__close').addEventListener('keydown', window.card.hideCard);
+        window.map.map.querySelector('.popup__close').addEventListener('mousedown', window.card.hideCard);
+        window.map.map.querySelector('.popup__close').addEventListener('keydown', window.card.hideCard);
       }
     };
     mapPins[index].addEventListener('mousedown', pinHandler);
