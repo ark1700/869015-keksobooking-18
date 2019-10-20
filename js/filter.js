@@ -5,18 +5,15 @@
 
   var typeFilterPin = function (filterType) {
     window.adsInMap = window.adsInMap.filter(function (ad) {
-      if (filterInput.value === 'any') {
-        return true;
-      }
-      return ad.offer[filterType] === filterInput.value;
+      return filterInput.value === 'any' || ad.offer[filterType] === filterInput.value;
     });
   };
 
   var filterPins = function () {
     window.adsInMap = window.ads;
     typeFilterPin('type');
-    if (window.adsInMap.length > window.data.ADS__NUMBER) {
-      window.adsInMap.length = window.data.ADS__NUMBER;
+    if (window.adsInMap.length > window.data.ADS_NUMBER) {
+      window.adsInMap.length = window.data.ADS_NUMBER;
     }
     window.map.refresh();
   };
