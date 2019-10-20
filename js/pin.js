@@ -19,12 +19,12 @@
       if (evt.type === 'mousedown' || evt.code === 'Enter' || evt.code === 'NumpadEnter') {
         var popup = window.map.map.querySelector('.popup');
         if (!popup) {
-          window.card.renderCard(window.ads[index]);
+          window.card.renderCard(window.adsInMap[index]);
         } else {
           if (getComputedStyle(popup).display === 'none') {
             popup.style.display = 'block';
           }
-          window.card.setCard(popup, window.ads[index]);
+          window.card.setCard(popup, window.adsInMap[index]);
         }
 
         window.map.map.querySelector('.popup__close').addEventListener('mousedown', window.card.hideCard);
