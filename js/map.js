@@ -20,7 +20,7 @@
       document.querySelector('.map').classList.remove('map--faded');
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
       window.form.disableAllInputs(false);
-      renderMap(window.ads, map);
+      renderMap(window.adsInMap, map);
       window.mainPin.setInputLocation();
       window.form.validtionForm();
 
@@ -61,10 +61,24 @@
     }
   };
 
+  var refresh = function () {
+    var mapPins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
+    mapPins.forEach(function (el) {
+      el.remove();
+    });
+    renderMap(window.adsInMap, map);
+    mapPins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < mapPins.length; i++) {
+      window.pin.addingPinHandler(mapPins, i);
+    }
+  };
+
   deactivateMap();
 
   window.map = {
     map: map,
     deactivateMap: deactivateMap,
+    refresh: refresh,
+    renderMap: renderMap,
   };
 })();
