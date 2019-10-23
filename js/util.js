@@ -2,7 +2,7 @@
 (function () {
   var DEBOUNCE_INTERVAL = 500;
 
-  window.debounce = function (cb) {
+  var debounce = function (cb) {
     var lastTimeout = null;
 
     return function () {
@@ -18,4 +18,8 @@
 
   window.PIN_WIDTH = 50;
   window.PIN_HEIGHT = 70;
+
+  window.util = {
+    debounce: debounce,
+  };
 })();

@@ -18,7 +18,7 @@
     }
   };
 
-  var hideWithoutValue = function (doSmth, value, hidedElem) {
+  var hideIfEmptyElem = function (doSmth, value, hidedElem) {
     if (value.toString()) {
       doSmth();
       if (hidedElem.style.display === 'none') {
@@ -41,14 +41,14 @@
         photoBlock.appendChild(photo);
       }
     };
-    hideWithoutValue(action, ad.offer.photos, card.querySelector('.popup__photos'));
+    hideIfEmptyElem(action, ad.offer.photos, card.querySelector('.popup__photos'));
   };
 
   var setCardElement = function (card, selector, func, value) {
     var action = function () {
       card.querySelector(selector)[func] = value;
     };
-    hideWithoutValue(action, value, card.querySelector(selector));
+    hideIfEmptyElem(action, value, card.querySelector(selector));
   };
 
   var setCard = function (cardElement, ad) {
