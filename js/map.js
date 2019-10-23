@@ -21,6 +21,7 @@
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
       window.form.disableAllInputs(false);
       renderMap(window.adsInMap, map);
+      window.filter.filterPins();
       window.mainPin.setInputLocation();
       window.form.validtionForm();
 
@@ -70,6 +71,11 @@
     mapPins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
     for (var i = 0; i < mapPins.length; i++) {
       window.pin.addingPinHandler(mapPins, i);
+    }
+
+    var popup = window.map.map.querySelector('.popup');
+    if (popup) {
+      popup.remove();
     }
   };
 

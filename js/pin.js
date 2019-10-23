@@ -29,6 +29,7 @@
 
         window.map.map.querySelector('.popup__close').addEventListener('mousedown', window.card.hideCard);
         window.map.map.querySelector('.popup__close').addEventListener('keydown', window.card.hideCard);
+        window.addEventListener('keydown', window.card.onEscHideCard);
       }
     };
     mapPins[index].addEventListener('mousedown', pinHandler);
