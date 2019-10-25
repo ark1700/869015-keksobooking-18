@@ -806,14 +806,27 @@ fieldset {
 }
 
 .ad-form__photo {
+  display: flex;
   margin-right: 10px;
   margin-bottom: 10px;
+  padding: 5px;
 
-  width: 70px;
+  min-width: 70px;
   height: 70px;
 
   background-color: #e4e4de;
   border-radius: 5px;
+}
+
+.ad-form__photo img {
+  margin-right: 5px;
+  max-width: 70px;
+  max-height: 70px;
+  border-radius: 5px;
+}
+
+.ad-form__photo img:last-child {
+  margin-right: 0;
 }
 
 .ad-form__element--submit {
