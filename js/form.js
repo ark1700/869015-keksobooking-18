@@ -4,15 +4,25 @@
   var adForm = document.querySelector('.ad-form');
 
   var validtionForm = function () {
-    var guestsNumberInput = adForm.querySelector('#capacity');
-    var roomsNumberInput = adForm.querySelector('#room_number');
+    var adRoomsNumber = adForm.querySelector('#room_number');
+    var adGuestsNumber = adForm.querySelector('#capacity');
+    var adGuestsNumberOptions = adForm.querySelectorAll('#capacity option');
 
-    adForm.addEventListener('input', function () {
-      if (guestsNumberInput.value > roomsNumberInput.value) {
-        guestsNumberInput.setCustomValidity('Кол-во гостей не должно превышать кол-ва комнат');
-      } else {
-        guestsNumberInput.setCustomValidity('');
-      }
+    adRoomsNumber.addEventListener('change', function () {
+      var validity = true;
+      adGuestsNumberOptions.forEach(function (adGuestsNumberOption) {
+        if (parseInt(adGuestsNumberOption.value, 10) > parseInt(adRoomsNumber.value, 10)) {
+          adGuestsNumberOption.disabled = true;
+          validity = false;
+        } else {
+          adGuestsNumberOption.disabled = false;
+        }
+        if (!validity) {
+          adGuestsNumber.setCustomValidity('Кол-во гостей не должно превышать кол-во комнат');
+        } else {
+          adGuestsNumber.setCustomValidity('');
+        }
+      });
     });
 
     var adTitle = adForm.querySelector('input[name="title"]');
@@ -20,19 +30,12 @@
     var adType = adForm.querySelector('select[name="type"]');
     var adTimeIn = adForm.querySelector('select[name="timein"]');
     var adTimeOut = adForm.querySelector('select[name="timeout"]');
-    var minTypePrice = [
-      ['bungalo', 'flat', 'house', 'palace'],
-      [0, 1000, 5000, 10000]
-    ];
 
-    var getMinTypePrice = function (type) {
-      var result;
-      for (var i = 0; i < minTypePrice[0].length; i++) {
-        if (type === minTypePrice[0][i]) {
-          result = minTypePrice[1][i];
-        }
-      }
-      return result;
+    var MinTypePrice = {
+      'bungalo': 0,
+      'flat': 1000,
+      'house': 5000,
+      'palace': 10000,
     };
 
     adTitle.addEventListener('invalid', function () {
@@ -51,39 +54,36 @@
       }
     });
 
-    adPrice.addEventListener('invalid', function () {
+    var priceValidationHandler = function () {
+      adType = adForm.querySelector('select[name="type"]');
       switch (true) {
-        case adTitle.validity.tooLong:
-          adTitle.setCustomValidity('Цена не должна превышать 1 000 0000 руб.');
+        case adPrice.validity.valueMissing:
+          adPrice.setCustomValidity('Обязательное поле');
           break;
-        case adTitle.validity.valueMissing:
-          adTitle.setCustomValidity('Обязательное поле');
+        case adPrice.value < MinTypePrice[adType.value]:
+          adPrice.setCustomValidity('Минимальная "Цена за ночь" для ' + adType.options[adType.selectedIndex].innerHTML + ' - ' + MinTypePrice[adType.value] + ' руб.');
+          break;
+        case adPrice.validity.tooLong:
+          adPrice.setCustomValidity('Цена не должна превышать 1 000 0000 руб.');
           break;
         default:
-          adTitle.setCustomValidity('');
+          adPrice.setCustomValidity('');
       }
+    };
+
+    adPrice.addEventListener('change', priceValidationHandler);
+
+    adType.addEventListener('change', function () {
+      adPrice.min = MinTypePrice[adType.value];
+      adPrice.placeholder = MinTypePrice[adType.value];
+      priceValidationHandler();
     });
 
-    adPrice.addEventListener('input', function (evt) {
-      var target = evt.target;
-      adType = adForm.querySelector('select[name="type"]');
-      if (target.value < getMinTypePrice(adType.value)) {
-        target.setCustomValidity('Минимальная "Цена за ночь" для ' + adType.options[adType.selectedIndex].innerHTML + ' - ' + getMinTypePrice(adType.value) + ' руб.');
-        return;
-      }
-      target.setCustomValidity('');
-    });
-
-    adType.addEventListener('input', function () {
-      adPrice.min = getMinTypePrice(adType.value);
-      adPrice.placeholder = getMinTypePrice(adType.value);
-    });
-
-    adTimeIn.addEventListener('input', function () {
+    adTimeIn.addEventListener('change', function () {
       adTimeOut.value = adTimeIn.value;
     });
 
-    adTimeOut.addEventListener('input', function () {
+    adTimeOut.addEventListener('change', function () {
       adTimeIn.value = adTimeOut.value;
     });
   };
@@ -153,6 +153,19 @@
     evt.preventDefault();
     window.upload(new FormData(adForm), onSuccessForm, onErrorForm);
   });
+
+  var restFormBtn = adForm.querySelector('.ad-form__reset');
+
+  var resetForm = function (evt) {
+    evt.preventDefault();
+    if (evt.type === 'click' || evt.code === 'Enter' || evt.code === 'NumpadEnter') {
+      adForm.reset();
+      window.mainPin.setInputLocation();
+    }
+  };
+
+  restFormBtn.addEventListener('click', resetForm);
+  restFormBtn.addEventListener('keydown', resetForm);
 
   window.form = {
     validtionForm: validtionForm,

@@ -18,15 +18,13 @@
     }
   };
 
-  var hideIfEmptyElem = function (doSmth, value, hidedElem) {
-    if (value.toString()) {
-      doSmth();
-      if (hidedElem.style.display === 'none') {
-        hidedElem.style.display = 'block';
-      }
-    } else if (hidedElem) {
-      hidedElem.innerHTML = '';
-      hidedElem.style.display = 'none';
+  var toogleDisplay = function (doAction, value, hidenElement) {
+    if (value.toString().trim()) {
+      doAction();
+      hidenElement.style.display = 'block';
+    } else if (hidenElement) {
+      hidenElement.innerHTML = '';
+      hidenElement.style.display = 'none';
     }
   };
 
@@ -41,7 +39,7 @@
         photoBlock.appendChild(photo);
       }
     };
-    hideIfEmptyElem(action, ad.offer.photos, card.querySelector('.popup__photos'));
+    toogleDisplay(action, ad.offer.photos, card.querySelector('.popup__photos'));
   };
 
   var featuresList = {
@@ -65,7 +63,7 @@
     var action = function () {
       card.querySelector(selector)[func] = value;
     };
-    hideIfEmptyElem(action, value, card.querySelector(selector));
+    toogleDisplay(action, value, card.querySelector(selector));
   };
 
   var setCard = function (cardElement, ad) {

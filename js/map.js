@@ -54,7 +54,8 @@
     }
 
     mainPin.style.top = '375px';
-    mainPin.style.left = '570px';
+    mainPin.style.left = parseInt(getComputedStyle(map).width.slice(0, -2), 10) / 2 - parseInt(getComputedStyle(mainPin).width.slice(0, -2), 10) / 2 + 'px';
+    window.mainPin.setInputLocation();
 
     if (window.form.successFormMessage) {
       document.removeEventListener('mousedown', window.form.successFormMessageHandler);

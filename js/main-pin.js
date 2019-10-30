@@ -1,10 +1,17 @@
 'use strict';
 (function () {
-
-  var locationInput = document.querySelector('#address');
-  var mainPin = document.querySelector('.map__pin--main');
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 87;
+
+  var locationInput = document.querySelector('#address');
+  var map = document.querySelector('.map');
+  var mainPin = document.querySelector('.map__pin--main');
+  var X_MAX = map.offsetWidth - mainPin.offsetWidth / 2;
+  var X_MIN = -mainPin.offsetWidth / 2;
+  var Y_MIN_COORDS = 130;
+  var Y_MAX_COORDS = 630;
+  var Y_MIN = Y_MIN_COORDS - MAIN_PIN_HEIGHT;
+  var Y_MAX = Y_MAX_COORDS - MAIN_PIN_HEIGHT;
 
   var setInputLocation = function () {
     var mainPinStyle = getComputedStyle(mainPin);
@@ -17,41 +24,34 @@
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
     var dragged = false;
+
+    var shiftX = event.clientX - mainPin.getBoundingClientRect().left;
+    var shiftY = event.clientY - mainPin.getBoundingClientRect().top;
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       dragged = true;
 
-      var Y_MIN = 129;
-      var Y_MAX = 631;
+      var newLeft = event.clientX - shiftX - map.getBoundingClientRect().left;
+      var newTop = event.clientY - shiftY - map.getBoundingClientRect().top;
 
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
-
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
-      if (
-        mainPin.offsetLeft - shift.x > -MAIN_PIN_WIDTH / 2 && // x min
-        mainPin.offsetLeft - shift.x < window.map.map.clientWidth - MAIN_PIN_WIDTH / 2 && // x max
-        mainPin.offsetTop - shift.y > Y_MIN - MAIN_PIN_HEIGHT && // y min
-        mainPin.offsetTop - shift.y < Y_MAX - MAIN_PIN_HEIGHT // y max
-      ) {
-        mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-        mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-        setInputLocation();
+      if (newLeft < X_MIN) {
+        newLeft = X_MIN;
       }
+      if (newLeft > X_MAX) {
+        newLeft = X_MAX;
+      }
+      if (newTop < Y_MIN) {
+        newTop = Y_MIN;
+      }
+      if (newTop > Y_MAX) {
+        newTop = Y_MAX;
+      }
+
+      mainPin.style.left = newLeft + 'px';
+      mainPin.style.top = newTop + 'px';
+      setInputLocation();
     };
 
     var onMouseUp = function (upEvt) {
