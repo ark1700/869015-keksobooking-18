@@ -8,22 +8,30 @@
     var adGuestsNumber = adForm.querySelector('#capacity');
     var adGuestsNumberOptions = adForm.querySelectorAll('#capacity option');
 
+    var adGuestsValid = function () {
+      if (parseInt(adGuestsNumber.value, 10) > parseInt(adRoomsNumber.value, 10)) {
+        adGuestsNumber.setCustomValidity('Кол-во гостей не должно превышать кол-во комнат');
+      } else {
+        adGuestsNumber.setCustomValidity('');
+      }
+      if (parseInt(adRoomsNumber.value, 10) === 100 && parseInt(adGuestsNumber.value, 10) !== 0) {
+        adGuestsNumber.setCustomValidity('"100 комнат" только "не для гостей"');
+      }
+    };
+
     adRoomsNumber.addEventListener('change', function () {
-      var validity = true;
       adGuestsNumberOptions.forEach(function (adGuestsNumberOption) {
-        if (parseInt(adGuestsNumberOption.value, 10) > parseInt(adRoomsNumber.value, 10)) {
+        if ((parseInt(adGuestsNumberOption.value, 10) > parseInt(adRoomsNumber.value, 10)) ||
+        (parseInt(adRoomsNumber.value, 10) === 100 && parseInt(adGuestsNumberOption.value, 10) !== 0)) {
           adGuestsNumberOption.disabled = true;
-          validity = false;
         } else {
           adGuestsNumberOption.disabled = false;
         }
-        if (!validity) {
-          adGuestsNumber.setCustomValidity('Кол-во гостей не должно превышать кол-во комнат');
-        } else {
-          adGuestsNumber.setCustomValidity('');
-        }
       });
+      adGuestsValid();
     });
+
+    adGuestsNumber.addEventListener('change', adGuestsValid);
 
     var adTitle = adForm.querySelector('input[name="title"]');
     var adPrice = adForm.querySelector('input[name="price"]');
@@ -161,6 +169,8 @@
     if (evt.type === 'click' || evt.code === 'Enter' || evt.code === 'NumpadEnter') {
       adForm.reset();
       window.mainPin.setInputLocation();
+      adForm.querySelector('.ad-form__photo').innerHTML = '';
+      adForm.querySelector('.ad-form-header__preview img').src = 'img/muffin-grey.svg';
     }
   };
 
