@@ -1,37 +1,38 @@
 'use strict';
 
 (function () {
+  var ROOMS_NUMBER_100 = 100;
+  var GUESTS_NUMBER_0 = 0;
   var adForm = document.querySelector('.ad-form');
 
-  var validtionForm = function () {
+  var validateForm = function () {
     var adRoomsNumber = adForm.querySelector('#room_number');
     var adGuestsNumber = adForm.querySelector('#capacity');
     var adGuestsNumberOptions = adForm.querySelectorAll('#capacity option');
 
-    var adGuestsValid = function () {
+    var adGuestsHandler = function () {
       if (parseInt(adGuestsNumber.value, 10) > parseInt(adRoomsNumber.value, 10)) {
         adGuestsNumber.setCustomValidity('Кол-во гостей не должно превышать кол-во комнат');
       } else {
         adGuestsNumber.setCustomValidity('');
       }
-      if (parseInt(adRoomsNumber.value, 10) === 100 && parseInt(adGuestsNumber.value, 10) !== 0) {
+      if ((parseInt(adRoomsNumber.value, 10) === ROOMS_NUMBER_100 && parseInt(adGuestsNumber.value, 10) !== GUESTS_NUMBER_0)) {
         adGuestsNumber.setCustomValidity('"100 комнат" только "не для гостей"');
+      }
+      if ((parseInt(adGuestsNumber.value, 10) === GUESTS_NUMBER_0) && parseInt(adRoomsNumber.value, 10) !== ROOMS_NUMBER_100) {
+        adGuestsNumber.setCustomValidity('"не для гостей" только для "100 комнат"');
       }
     };
 
     adRoomsNumber.addEventListener('change', function () {
       adGuestsNumberOptions.forEach(function (adGuestsNumberOption) {
-        if ((parseInt(adGuestsNumberOption.value, 10) > parseInt(adRoomsNumber.value, 10)) ||
-        (parseInt(adRoomsNumber.value, 10) === 100 && parseInt(adGuestsNumberOption.value, 10) !== 0)) {
-          adGuestsNumberOption.disabled = true;
-        } else {
-          adGuestsNumberOption.disabled = false;
-        }
+        adGuestsNumberOption.disabled = (parseInt(adGuestsNumberOption.value, 10) > parseInt(adRoomsNumber.value, 10)) ||
+          (parseInt(adRoomsNumber.value, 10) === 100 && parseInt(adGuestsNumberOption.value, 10) !== 0);
       });
-      adGuestsValid();
+      adGuestsHandler();
     });
 
-    adGuestsNumber.addEventListener('change', adGuestsValid);
+    adGuestsNumber.addEventListener('change', adGuestsHandler);
 
     var adTitle = adForm.querySelector('input[name="title"]');
     var adPrice = adForm.querySelector('input[name="price"]');
@@ -159,12 +160,12 @@
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.upload(new FormData(adForm), onSuccessForm, onErrorForm);
+    window.backend.upload(new FormData(adForm), onSuccessForm, onErrorForm);
   });
 
   var restFormBtn = adForm.querySelector('.ad-form__reset');
 
-  var resetForm = function (evt) {
+  var resetFormBtnHandler = function (evt) {
     evt.preventDefault();
     if (evt.type === 'click' || evt.code === 'Enter' || evt.code === 'NumpadEnter') {
       adForm.reset();
@@ -174,11 +175,11 @@
     }
   };
 
-  restFormBtn.addEventListener('click', resetForm);
-  restFormBtn.addEventListener('keydown', resetForm);
+  restFormBtn.addEventListener('click', resetFormBtnHandler);
+  restFormBtn.addEventListener('keydown', resetFormBtnHandler);
 
   window.form = {
-    validtionForm: validtionForm,
+    validateForm: validateForm,
     disableAllInputs: disableAllInputs,
   };
 })();

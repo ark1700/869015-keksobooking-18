@@ -2,16 +2,16 @@
 (function () {
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 87;
-
-  var locationInput = document.querySelector('#address');
-  var map = document.querySelector('.map');
-  var mainPin = document.querySelector('.map__pin--main');
-  var X_MAX = map.offsetWidth - mainPin.offsetWidth / 2;
-  var X_MIN = -mainPin.offsetWidth / 2;
   var Y_MIN_COORDS = 130;
   var Y_MAX_COORDS = 630;
   var Y_MIN = Y_MIN_COORDS - MAIN_PIN_HEIGHT;
   var Y_MAX = Y_MAX_COORDS - MAIN_PIN_HEIGHT;
+
+  var map = document.querySelector('.map');
+  var mainPin = document.querySelector('.map__pin--main');
+  var X_MAX = map.offsetWidth - mainPin.offsetWidth / 2;
+  var X_MIN = -mainPin.offsetWidth / 2;
+  var locationInput = document.querySelector('#address');
 
   var setInputLocation = function () {
     var mainPinStyle = getComputedStyle(mainPin);
@@ -26,15 +26,15 @@
     evt.preventDefault();
     var dragged = false;
 
-    var shiftX = event.clientX - mainPin.getBoundingClientRect().left;
-    var shiftY = event.clientY - mainPin.getBoundingClientRect().top;
+    var shiftX = evt.clientX - mainPin.getBoundingClientRect().left;
+    var shiftY = evt.clientY - mainPin.getBoundingClientRect().top;
 
-    var onMouseMove = function (moveEvt) {
+    var mouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
       dragged = true;
 
-      var newLeft = event.clientX - shiftX - map.getBoundingClientRect().left;
-      var newTop = event.clientY - shiftY - map.getBoundingClientRect().top;
+      var newLeft = moveEvt.clientX - shiftX - map.getBoundingClientRect().left;
+      var newTop = moveEvt.clientY - shiftY - map.getBoundingClientRect().top;
 
       if (newLeft < X_MIN) {
         newLeft = X_MIN;
@@ -54,24 +54,24 @@
       setInputLocation();
     };
 
-    var onMouseUp = function (upEvt) {
+    var mouseUpHandler = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
 
       if (dragged) {
-        var onClickPreventDefault = function (dragEvt) {
+        var mainPinHandler = function (dragEvt) {
           dragEvt.preventDefault();
-          mainPin.removeEventListener('click', onClickPreventDefault);
+          mainPin.removeEventListener('click', mainPinHandler);
         };
-        mainPin.addEventListener('click', onClickPreventDefault);
+        mainPin.addEventListener('click', mainPinHandler);
       }
 
     };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   });
 
   window.mainPin = {

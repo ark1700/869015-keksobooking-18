@@ -16,9 +16,6 @@
     };
   };
 
-  window.PIN_WIDTH = 50;
-  window.PIN_HEIGHT = 70;
-
   window.util = {
     debounce: debounce,
   };

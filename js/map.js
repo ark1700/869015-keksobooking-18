@@ -1,12 +1,13 @@
 'use strict';
 
 (function () {
+  var MAIN_PIN_TOP = '375px';
   var map = document.querySelector('.map__pins');
 
-  var renderMap = function (pin, mapWindow) {
+  var renderMap = function (pins, mapWindow) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < pin.length; i++) {
-      fragment.appendChild(window.pin.renderPin(pin[i]));
+    for (var i = 0; i < pins.length; i++) {
+      fragment.appendChild(window.pin.renderPin(pins[i]));
     }
     mapWindow.appendChild(fragment);
   };
@@ -14,20 +15,20 @@
   var mainPin = document.querySelector('.map__pin--main');
 
   var activateMap = function (evt) {
-    if ((evt.type === 'mousedown' || evt.code === 'Enter' || evt.code === 'NumpadEnter') && window.ads) {
+    if ((evt.type === 'mousedown' || evt.code === 'Enter' || evt.code === 'NumpadEnter') && window.data.ads) {
       mainPin.removeEventListener('mousedown', activateMap);
       mainPin.removeEventListener('keydown', activateMap);
       document.querySelector('.map').classList.remove('map--faded');
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
       window.form.disableAllInputs(false);
-      renderMap(window.adsInMap, map);
+      renderMap(window.data.adsInMap, map);
       window.filter.filterPins();
       window.mainPin.setInputLocation();
-      window.form.validtionForm();
+      window.form.validateForm();
 
       var mapPins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
       for (var i = 0; i < mapPins.length; i++) {
-        window.pin.addingPinHandler(mapPins, i);
+        window.pin.addPinHandler(mapPins, i);
       }
     }
   };
@@ -53,7 +54,7 @@
       map.querySelector('.popup').remove();
     }
 
-    mainPin.style.top = '375px';
+    mainPin.style.top = MAIN_PIN_TOP;
     mainPin.style.left = parseInt(getComputedStyle(map).width.slice(0, -2), 10) / 2 - parseInt(getComputedStyle(mainPin).width.slice(0, -2), 10) / 2 + 'px';
     window.mainPin.setInputLocation();
 
@@ -68,10 +69,10 @@
     mapPins.forEach(function (el) {
       el.remove();
     });
-    renderMap(window.adsInMap, map);
+    renderMap(window.data.adsInMap, map);
     mapPins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
     for (var i = 0; i < mapPins.length; i++) {
-      window.pin.addingPinHandler(mapPins, i);
+      window.pin.addPinHandler(mapPins, i);
     }
 
     var popup = window.map.map.querySelector('.popup');

@@ -2,14 +2,19 @@
 (function () {
   var ADS_NUMBER = 5;
   var makeData = function (data) {
-    window.ads = data;
-    window.adsInMap = window.ads.slice();
-    if (window.adsInMap.length > ADS_NUMBER) {
-      window.adsInMap.length = ADS_NUMBER;
+    var ads = data;
+    var adsInMap = ads.slice();
+    if (adsInMap.length > ADS_NUMBER) {
+      adsInMap.length = ADS_NUMBER;
     }
+    window.data = {
+      ads: ads,
+      adsInMap: adsInMap,
+      ADS_NUMBER: ADS_NUMBER,
+    };
   };
 
-  var errorHandler = function (errorMessage) {
+  var placeErrorMessage = function (errorMessage) {
     var errorTemplate = document.querySelector('#error')
       .content
       .querySelector('.error');
@@ -29,9 +34,5 @@
     document.body.insertAdjacentElement('afterbegin', error);
   };
 
-  window.loadAds(makeData, errorHandler);
-
-  window.data = {
-    ADS_NUMBER: ADS_NUMBER,
-  };
+  window.backend.loadAds(makeData, placeErrorMessage);
 })();
