@@ -14,10 +14,10 @@
 
   var mainPin = document.querySelector('.map__pin--main');
 
-  var activateMap = function (evt) {
+  var activateMapHandler = function (evt) {
     if ((evt.type === 'mousedown' || evt.code === 'Enter' || evt.code === 'NumpadEnter') && window.data.ads) {
-      mainPin.removeEventListener('mousedown', activateMap);
-      mainPin.removeEventListener('keydown', activateMap);
+      mainPin.removeEventListener('mousedown', activateMapHandler);
+      mainPin.removeEventListener('keydown', activateMapHandler);
       document.querySelector('.map').classList.remove('map--faded');
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
       window.form.disableAllInputs(false);
@@ -33,9 +33,9 @@
     }
   };
 
-  var deactivateMap = function () {
-    mainPin.addEventListener('mousedown', activateMap);
-    mainPin.addEventListener('keydown', activateMap);
+  var deactivateMapHandler = function () {
+    mainPin.addEventListener('mousedown', activateMapHandler);
+    mainPin.addEventListener('keydown', activateMapHandler);
     document.querySelector('.ad-form').reset();
     document.querySelector('.map__filters').reset();
     window.form.disableAllInputs();
@@ -81,11 +81,11 @@
     }
   };
 
-  deactivateMap();
+  deactivateMapHandler();
 
   window.map = {
     map: map,
-    deactivateMap: deactivateMap,
+    deactivateMapHandler: deactivateMapHandler,
     refresh: refresh,
     renderMap: renderMap,
   };

@@ -109,7 +109,7 @@
   };
 
   var onSuccessForm = function () {
-    window.map.deactivateMap();
+    window.map.deactivateMapHandler();
 
     var successFormTemplate = document.querySelector('#success')
       .content
