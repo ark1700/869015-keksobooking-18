@@ -61,9 +61,9 @@
     });
   };
 
-  var setCardElement = function (card, selector, method, value) {
+  var setCardElement = function (card, selector, attribute, value) {
     var action = function () {
-      card.querySelector(selector)[method] = value;
+      card.querySelector(selector)[attribute] = value;
     };
     toogleDisplay(action, value, card.querySelector(selector));
   };
@@ -90,10 +90,10 @@
     window.map.map.appendChild(fragment);
   };
 
-  var hideCard = function (evt) {
+  var hideCardHandler = function (evt) {
     if (evt.type === 'mousedown' || evt.code === 'Enter' || evt.code === 'NumpadEnter') {
       window.map.map.querySelector('.popup').style.display = 'none';
-      window.map.map.querySelector('.popup__close').removeEventListener('mousedown', hideCard);
+      window.map.map.querySelector('.popup__close').removeEventListener('mousedown', hideCardHandler);
     }
   };
 
@@ -107,7 +107,7 @@
   window.card = {
     renderCard: renderCard,
     setCard: setCard,
-    hideCard: hideCard,
+    hideCardHandler: hideCardHandler,
     escHideCardHandler: escHideCardHandler,
   };
 })();

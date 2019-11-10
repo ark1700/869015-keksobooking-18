@@ -16,7 +16,7 @@
     return pinElement;
   };
 
-  var addPinHandler = function (mapPins, index) {
+  var addPinHandlers = function (mapPins, index) {
     var pinHandler = function (evt) {
       if (evt.type === 'mousedown' || evt.code === 'Enter' || evt.code === 'NumpadEnter') {
         var popup = window.map.map.querySelector('.popup');
@@ -29,8 +29,8 @@
           window.card.setCard(popup, window.data.adsInMap[index]);
         }
 
-        window.map.map.querySelector('.popup__close').addEventListener('mousedown', window.card.hideCard);
-        window.map.map.querySelector('.popup__close').addEventListener('keydown', window.card.hideCard);
+        window.map.map.querySelector('.popup__close').addEventListener('mousedown', window.card.hideCardHandler);
+        window.map.map.querySelector('.popup__close').addEventListener('keydown', window.card.hideCardHandler);
         window.addEventListener('keydown', window.card.escHideCardHandler);
       }
     };
@@ -40,6 +40,6 @@
 
   window.pin = {
     renderPin: renderPin,
-    addPinHandler: addPinHandler,
+    addPinHandlers: addPinHandlers,
   };
 })();

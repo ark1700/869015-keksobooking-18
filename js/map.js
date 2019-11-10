@@ -28,7 +28,7 @@
 
       var mapPins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
       for (var i = 0; i < mapPins.length; i++) {
-        window.pin.addPinHandler(mapPins, i);
+        window.pin.addPinHandlers(mapPins, i);
       }
     }
   };
@@ -72,7 +72,7 @@
     renderMap(window.data.adsInMap, map);
     mapPins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
     for (var i = 0; i < mapPins.length; i++) {
-      window.pin.addPinHandler(mapPins, i);
+      window.pin.addPinHandlers(mapPins, i);
     }
 
     var popup = window.map.map.querySelector('.popup');

@@ -14,7 +14,7 @@
     };
   };
 
-  var placeErrorMessage = function (errorMessage) {
+  var reportAnError = function (errorMessage) {
     var errorTemplate = document.querySelector('#error')
       .content
       .querySelector('.error');
@@ -34,5 +34,5 @@
     document.body.insertAdjacentElement('afterbegin', error);
   };
 
-  window.backend.loadAds(makeData, placeErrorMessage);
+  window.backend.loadAds(makeData, reportAnError);
 })();

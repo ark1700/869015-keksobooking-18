@@ -6,7 +6,7 @@
   var filterInputPrice = mapFilters.querySelector('select#housing-price');
   var filterFeatures = mapFilters.querySelectorAll('input[type="checkbox"][name="features"]');
 
-  var filterPinByType = function (type, ad) {
+  var filterByType = function (type, ad) {
     var filterInput = mapFilters.querySelector('select#housing-' + type);
     if (filterInput.value !== 'any') {
       return ad.offer[type].toString() === filterInput.value;
@@ -14,7 +14,7 @@
     return true;
   };
 
-  var priceFilterPin = function (ad) {
+  var filterByPrice = function (ad) {
     switch (filterInputPrice.value) {
       case 'low':
         return ad.offer.price < LOW_OFFER_PRICE;
@@ -46,10 +46,10 @@
   };
 
   var filterPin = function (ad) {
-    return filterPinByType('type', ad) &&
-          priceFilterPin(ad) &&
-          filterPinByType('rooms', ad) &&
-          filterPinByType('guests', ad) &&
+    return filterByType('type', ad) &&
+          filterByPrice(ad) &&
+          filterByType('rooms', ad) &&
+          filterByType('guests', ad) &&
           featuresFilterPin(ad);
   };
 

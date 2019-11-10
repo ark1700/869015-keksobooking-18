@@ -10,7 +10,7 @@
     var adGuestsNumber = adForm.querySelector('#capacity');
     var adGuestsNumberOptions = adForm.querySelectorAll('#capacity option');
 
-    var adGuestsHandler = function () {
+    var adGuestsValidateHandler = function () {
       if (parseInt(adGuestsNumber.value, 10) > parseInt(adRoomsNumber.value, 10)) {
         adGuestsNumber.setCustomValidity('Кол-во гостей не должно превышать кол-во комнат');
       } else {
@@ -29,10 +29,10 @@
         adGuestsNumberOption.disabled = (parseInt(adGuestsNumberOption.value, 10) > parseInt(adRoomsNumber.value, 10)) ||
           (parseInt(adRoomsNumber.value, 10) === 100 && parseInt(adGuestsNumberOption.value, 10) !== 0);
       });
-      adGuestsHandler();
+      adGuestsValidateHandler();
     });
 
-    adGuestsNumber.addEventListener('change', adGuestsHandler);
+    adGuestsNumber.addEventListener('change', adGuestsValidateHandler);
 
     var adTitle = adForm.querySelector('input[name="title"]');
     var adPrice = adForm.querySelector('input[name="price"]');
