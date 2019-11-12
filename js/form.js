@@ -32,11 +32,11 @@
       adGuestsValidate();
     });
 
-    var adGuestsValidateHandler = function () {
+    var adGuestsNumberChangeValidateHandler = function () {
       adGuestsValidate();
     };
 
-    adGuestsNumber.addEventListener('change', adGuestsValidateHandler);
+    adGuestsNumber.addEventListener('change', adGuestsNumberChangeValidateHandler);
 
     var adTitle = adForm.querySelector('input[name="title"]');
     var adPrice = adForm.querySelector('input[name="price"]');
