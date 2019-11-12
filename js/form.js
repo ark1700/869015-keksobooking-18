@@ -10,7 +10,7 @@
     var adGuestsNumber = adForm.querySelector('#capacity');
     var adGuestsNumberOptions = adForm.querySelectorAll('#capacity option');
 
-    var adGuestsValidateHandler = function () {
+    var adGuestsValidate = function () {
       if (parseInt(adGuestsNumber.value, 10) > parseInt(adRoomsNumber.value, 10)) {
         adGuestsNumber.setCustomValidity('Кол-во гостей не должно превышать кол-во комнат');
       } else {
@@ -29,8 +29,12 @@
         adGuestsNumberOption.disabled = (parseInt(adGuestsNumberOption.value, 10) > parseInt(adRoomsNumber.value, 10)) ||
           (parseInt(adRoomsNumber.value, 10) === 100 && parseInt(adGuestsNumberOption.value, 10) !== 0);
       });
-      adGuestsValidateHandler();
+      adGuestsValidate();
     });
+
+    var adGuestsValidateHandler = function () {
+      adGuestsValidate();
+    };
 
     adGuestsNumber.addEventListener('change', adGuestsValidateHandler);
 
@@ -109,7 +113,7 @@
   };
 
   var onSuccessForm = function () {
-    window.map.deactivateMapHandler();
+    window.map.mapDeactivateHandler();
 
     var successFormTemplate = document.querySelector('#success')
       .content
@@ -117,16 +121,16 @@
     var successFormMessage = successFormTemplate.cloneNode(true);
     document.body.insertAdjacentElement('afterbegin', successFormMessage);
 
-    var successFormMessageHandler = function (evt) {
+    var successFormMessageCloseHandler = function (evt) {
       if (evt.type === 'mousedown' || evt.code === 'Escape') {
         successFormMessage.remove();
       }
     };
-    document.addEventListener('mousedown', successFormMessageHandler);
-    document.addEventListener('keydown', successFormMessageHandler);
+    document.addEventListener('mousedown', successFormMessageCloseHandler);
+    document.addEventListener('keydown', successFormMessageCloseHandler);
 
     window.form.successFormMessage = successFormMessage;
-    window.form.successFormMessageHandler = successFormMessageHandler;
+    window.form.successFormMessageCloseHandler = successFormMessageCloseHandler;
   };
 
   var onErrorForm = function (msg) {
@@ -140,21 +144,21 @@
 
     var errorBtn = document.querySelector('.error__button');
 
-    var errorHandler = function (evt) {
+    var errorMessageRemoveHandler = function (evt) {
       if (evt.type === 'mousedown' || evt.code === 'Escape' ||
         evt.target === errorBtn && (evt.code === 'Enter' || evt.code === 'NumpadEnter')
       ) {
         errorFormMessage.remove();
 
-        document.removeEventListener('mousedown', errorHandler);
-        document.removeEventListener('keydown', errorHandler);
-        errorBtn.addEventListener('keydown', errorHandler);
+        document.removeEventListener('mousedown', errorMessageRemoveHandler);
+        document.removeEventListener('keydown', errorMessageRemoveHandler);
+        errorBtn.addEventListener('keydown', errorMessageRemoveHandler);
       }
     };
 
-    document.addEventListener('mousedown', errorHandler);
-    document.addEventListener('keydown', errorHandler);
-    errorBtn.addEventListener('keydown', errorHandler);
+    document.addEventListener('mousedown', errorMessageRemoveHandler);
+    document.addEventListener('keydown', errorMessageRemoveHandler);
+    errorBtn.addEventListener('keydown', errorMessageRemoveHandler);
   };
 
 

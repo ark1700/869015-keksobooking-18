@@ -22,15 +22,15 @@
     error.querySelector('.error__message').textContent = errorMessage;
     var errorBtn = error.querySelector('.error__button');
 
-    var errorBtnHandler = function (evt) {
+    var errorBtnClosePopupHandler = function (evt) {
       evt.preventDefault();
       if (evt.code === 'Enter' || evt.code === 'NumpadEnter' || evt.type === 'mousedown') {
         window.location.reload();
       }
     };
 
-    errorBtn.addEventListener('mousedown', errorBtnHandler);
-    errorBtn.addEventListener('keydown', errorBtnHandler);
+    errorBtn.addEventListener('mousedown', errorBtnClosePopupHandler);
+    errorBtn.addEventListener('keydown', errorBtnClosePopupHandler);
     document.body.insertAdjacentElement('afterbegin', error);
   };
 

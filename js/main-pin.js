@@ -9,8 +9,8 @@
 
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
-  var X_MAX = map.offsetWidth - mainPin.offsetWidth / 2;
-  var X_MIN = -mainPin.offsetWidth / 2;
+  var xMax = map.offsetWidth - mainPin.offsetWidth / 2;
+  var xMin = -mainPin.offsetWidth / 2;
   var locationInput = document.querySelector('#address');
 
   var setInputLocation = function () {
@@ -36,11 +36,11 @@
       var newLeft = moveEvt.clientX - shiftX - map.getBoundingClientRect().left;
       var newTop = moveEvt.clientY - shiftY - map.getBoundingClientRect().top;
 
-      if (newLeft < X_MIN) {
-        newLeft = X_MIN;
+      if (newLeft < xMin) {
+        newLeft = xMin;
       }
-      if (newLeft > X_MAX) {
-        newLeft = X_MAX;
+      if (newLeft > xMax) {
+        newLeft = xMax;
       }
       if (newTop < Y_MIN) {
         newTop = Y_MIN;
@@ -61,11 +61,11 @@
       document.removeEventListener('mouseup', mouseUpHandler);
 
       if (dragged) {
-        var mainPinHandler = function (dragEvt) {
+        var mainPinPreventDefaultHandler = function (dragEvt) {
           dragEvt.preventDefault();
-          mainPin.removeEventListener('click', mainPinHandler);
+          mainPin.removeEventListener('click', mainPinPreventDefaultHandler);
         };
-        mainPin.addEventListener('click', mainPinHandler);
+        mainPin.addEventListener('click', mainPinPreventDefaultHandler);
       }
 
     };

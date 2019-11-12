@@ -17,7 +17,7 @@
   };
 
   var addPinHandlers = function (mapPins, index) {
-    var pinHandler = function (evt) {
+    var pinShowCardHandler = function (evt) {
       if (evt.type === 'mousedown' || evt.code === 'Enter' || evt.code === 'NumpadEnter') {
         var popup = window.map.map.querySelector('.popup');
         if (!popup) {
@@ -29,13 +29,13 @@
           window.card.setCard(popup, window.data.adsInMap[index]);
         }
 
-        window.map.map.querySelector('.popup__close').addEventListener('mousedown', window.card.hideCardHandler);
-        window.map.map.querySelector('.popup__close').addEventListener('keydown', window.card.hideCardHandler);
-        window.addEventListener('keydown', window.card.escHideCardHandler);
+        window.map.map.querySelector('.popup__close').addEventListener('mousedown', window.card.closeCardBtnHideCardHandler);
+        window.map.map.querySelector('.popup__close').addEventListener('keydown', window.card.closeCardBtnHideCardHandler);
+        window.addEventListener('keydown', window.card.escKeyHideCardHandler);
       }
     };
-    mapPins[index].addEventListener('mousedown', pinHandler);
-    mapPins[index].addEventListener('keydown', pinHandler);
+    mapPins[index].addEventListener('mousedown', pinShowCardHandler);
+    mapPins[index].addEventListener('keydown', pinShowCardHandler);
   };
 
   window.pin = {

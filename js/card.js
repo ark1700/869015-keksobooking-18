@@ -90,24 +90,24 @@
     window.map.map.appendChild(fragment);
   };
 
-  var hideCardHandler = function (evt) {
+  var closeCardBtnHideCardHandler = function (evt) {
     if (evt.type === 'mousedown' || evt.code === 'Enter' || evt.code === 'NumpadEnter') {
       window.map.map.querySelector('.popup').style.display = 'none';
-      window.map.map.querySelector('.popup__close').removeEventListener('mousedown', hideCardHandler);
+      window.map.map.querySelector('.popup__close').removeEventListener('mousedown', closeCardBtnHideCardHandler);
     }
   };
 
-  var escHideCardHandler = function (evt) {
+  var escKeyHideCardHandler = function (evt) {
     if (evt.code === 'Escape') {
       window.map.map.querySelector('.popup').style.display = 'none';
-      window.removeEventListener('keydown', escHideCardHandler);
+      window.removeEventListener('keydown', escKeyHideCardHandler);
     }
   };
 
   window.card = {
     renderCard: renderCard,
     setCard: setCard,
-    hideCardHandler: hideCardHandler,
-    escHideCardHandler: escHideCardHandler,
+    closeCardBtnHideCardHandler: closeCardBtnHideCardHandler,
+    escKeyHideCardHandler: escKeyHideCardHandler,
   };
 })();
